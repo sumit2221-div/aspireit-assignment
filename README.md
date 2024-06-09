@@ -1,70 +1,97 @@
-# Getting Started with Create React App
+This project is a simple React application with Redux for state management, Axios for API requests, and Tailwind CSS for styling. The key components include:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Frontend: React components for user authentication and profile management.
+State Management: Redux is used to manage authentication and user profile state.
+API Integration: Axios is used to communicate with backend endpoints for user login and profile management.
+Styling: Tailwind CSS is used for responsive design.
+Key Components
+1. Redux State Management
+authSlice: Handles authentication state, including token and user data.
+2. API Integration
+loginUser: Handles user login and token retrieval.
+fetchUserProfile: Retrieves user profile information.
+3. React Components
+LoginPage: Handles user login.
+UserProfile: Displays and allows editing of user profile information.
+Instructions for Running the Application Locally
+Clone the Repository:
 
-## Available Scripts
+bash
+Copy code
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+Install Dependencies:
 
-In the project directory, you can run:
+bash
+Copy code
+npm install
+Set Up Environment Variables:
+Create a .env file in the root of the project and add your API base URL.
 
-### `npm start`
+env
+Copy code
+REACT_APP_API_BASE_URL=https://api.aspireit.com
+Start the Application:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+bash
+Copy code
+npm start
+Open the Application:
+Open your browser and navigate to http://localhost:3000.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+API Integration Details
+Managing JWT Authentication
+Storing Token: After successful login, store the JWT token in Redux state.
+Using Token: Include the JWT token in the Authorization header for authenticated requests.
+Sample Code Snippets
+User Authentication
+authSlice.js
 
-### `npm test`
+js
+Copy code
+import { createSlice } from "@reduxjs/toolkit";
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+const authSlice = createSlice({
+  name: 'auth',
+  initialState: {
+    token: null,
+    user: null,
+  },
+  reducers: {
+    setToken: (state, action) => {
+      state.token = action.payload;
+    },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+    }
+  }
+});
 
-### `npm run build`
+export const { setToken, setUser, logout } = authSlice.actions;
+export default authSlice.reducer;
+API Calls Using Axios
+api.js
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+js
+Copy code
+import axios from 'axios';
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+const api = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URL,
+});
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+export const loginUser = async (credentials) => {
+  const response = await api.post('/auth/login', credentials);
+  return response.data;
+};
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export const fetchUserProfile = async (token) => {
+  const response = await api.get('/user/profile', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};

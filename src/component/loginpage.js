@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setToken, setUser } from '../redux/authslice';
+import { setToken, setUser } from '../redux/authSlice';
 import { loginUser } from '../api';
 
 const LoginPage = () => {

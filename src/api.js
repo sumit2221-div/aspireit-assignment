@@ -16,12 +16,4 @@ export const fetchUserProfile = async (token) => {
   return response.data;
 };
 
-export const uploadProfilePicture = async (token, formData) => {
-  const response = await api.post('/user/profile-picture', formData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-  return response.data;
-};
+
