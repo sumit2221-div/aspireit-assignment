@@ -1,25 +1,44 @@
-import logo from './logo.svg';
+
 import './App.css';
+import { Container, TextField, Button, Typography, Box } from '@mui/material';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Container maxWidth="xs">
+    <Box mt={5} p={3} boxShadow={3} borderRadius={2}>
+      <Typography variant="h4" gutterBottom>Login</Typography>
+      <form >
+        <TextField
+          label="Username"
+          name="username"
+          fullWidth
+          margin="normal"
+          variant="outlined"
+       
+          required
+        />
+        <TextField
+          label="Password"
+          name="password"
+          type="password"
+          fullWidth
+          margin="normal"
+          variant="outlined"
+       
+          required
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
+          Login
+        </Button>
+      </form>
+    </Box>
+  </Container>
+);
+};
 export default App;
